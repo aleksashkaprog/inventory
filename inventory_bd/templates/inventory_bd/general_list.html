@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Сводная таблица</title>
+</head>
+<body>
+     <div class="container" style="max-width: 1920px">
+        <div style="display: flex; flex-direction: column">
+                <table data-href-template="" border="1" style="border-collapse:collapse; width: 100%; margin-bottom: 50px; font-size: 30px">
+                <tr>
+                  <th>id ответственного</th>
+                  <th>id товара</th>
+                  <th>Редактирование</th>
+                </tr>
+                 {%  for gen in general_list %}
+                    <tr>
+                        <td>{{ gen.people_id }}</td>
+                        <td>{{ gen.product_id }}</td>
+                        <td><a href="{% url 'edit-general' gen.id %}">Редактировать</a></td>
+                    </tr>
+                {% endfor %}
+                </table>
+        </div>
+            <div style="display: flex">
+                <form action="{% url 'create-general' %}" target="_blank" >
+                    <button class="btn" style="margin-right: 20px; width: 120px; height: 50px; font-size: 18px; cursor: pointer">Добавить</button>
+                </form>
+                <form action="/admin/inventory_bd/general/" target="_blank">
+                    <button class="btn" style="margin-right: 20px; width: 120px; height: 50px; font-size: 18px; cursor: pointer">Удалить</button>
+                 </form>
+        </div>
+    </div>
+
+</body>
+</html>
