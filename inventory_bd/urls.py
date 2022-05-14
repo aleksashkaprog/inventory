@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import ThingUpdateView, QRView, ThingCreateView, MainView, bd_list, RespListView, RespUpdateView, \
-    RespCreateView, GeneralListView, GeneralCreateView, GeneralUpdateView
+    RespCreateView, GeneralListView, GeneralCreateView, GeneralUpdateView, responsible_list
 
 from . import views
 
@@ -16,4 +16,5 @@ urlpatterns = [
     path('invetory/general/', GeneralListView.as_view(), name='general-list'),
     path('inventory/create_general/', GeneralCreateView.as_view(), name='create-general'),
     path('inventory/<int:pk>/edit_general/', GeneralUpdateView.as_view(), name='edit-general'),
+    path('invetory/responsibles_all/', responsible_list, name='resp-all'),
     ]

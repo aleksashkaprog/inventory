@@ -19,7 +19,6 @@
                   <th>Количество</th>
                   <th>Сумма</th>
                   <th>Примечание</th>
-                  <th>id ответственного</th>
                   <th>Qr-код</th>
                   <th>Редактирование ответственного</th>
                   <th>Редактирование объекта</th>
@@ -34,7 +33,6 @@
                         <td>{{ r.count }}</td>
                         <td>{{ r.summ }}</td>
                         <td>{{ r.note }}</td>
-                        <td>{{ resp.id }}</td>
                         <td><a href="{% url 'qrcode' resp.id %}">Qr-код</a></td>
                         <td><a href="{% url 'edit-resp' resp.id %}">Редактировать</a></td>
                         <td><a href="{% url 'edit-thing' r.id %}">Редактировать</a></td>

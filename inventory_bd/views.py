@@ -69,6 +69,18 @@ class RespListView(generic.ListView):
     context_object_name = 'responsible_list'
 
 
+def responsible_list(request, *args, **kwargs):
+    conn = sqlite3.connect('db.sqlite3')
+    cursor = conn.cursor()
+    cursor.execute("""select id, name from inventory_bd_responsible""")
+    tables = cursor.fetchall()
+    my_id = conn.cursor()
+    my_id.execute("""select id from inventory_bd_responsible""")
+
+    return render(request, 'inventory_bd/responsible_all.html', {'tables': tables, 'my_id': my_id})
+
+
+
 class RespUpdateView(UpdateView):
     model = Responsible
     template_name_suffix = '_update_form'
@@ -87,6 +99,7 @@ class RespCreateView(CreateView):
         Responsible.objects.create()
 
         return HttpResponseRedirect(reverse('resp-list'))
+
 
 
 class GeneralListView(generic.ListView):
