@@ -1,9 +1,9 @@
 from django.contrib import admin
-from inventory_bd.models import Thing, Responsible, General
+from inventory_bd.models import Thing, Responsible
 
 
 class ThingAdmin(admin.ModelAdmin):
-    list_display = ['name', 'code', 'inv', 'price', 'count', 'summ', 'note', 'resp']
+    list_display = ['name', 'code', 'inv', 'price', 'count', 'summ', 'note']
 
 
 admin.site.register(Thing, ThingAdmin)
@@ -16,8 +16,4 @@ class ResponsibleAdmin(admin.ModelAdmin):
 admin.site.register(Responsible, ResponsibleAdmin)
 
 
-class GeneralAdmin(admin.ModelAdmin):
-    list_display = ['people', 'product']
 
-
-admin.site.register(General, GeneralAdmin)

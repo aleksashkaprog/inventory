@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.views import View, generic
 from django.views.generic import UpdateView, CreateView
 
-from inventory_bd.models import Thing, Responsible, General
+from inventory_bd.models import Thing, Responsible
 import sqlite3
 from inventory_bd.forms import ThingForm, ResponsibleForm
 
@@ -17,7 +17,7 @@ class MainView(View):
 def bd_list(request, *args, **kwargs):
     conn = sqlite3.connect('db.sqlite3')
     cursor = conn.cursor()
-    cursor.execute("""select id, name, code, inv, price, count, summ, note, resp_id from inventory_bd_thing""")
+    cursor.execute("""select id, name, code, inv, price, count, summ, note from inventory_bd_thing""")
     tables = cursor.fetchall()
     my_id = conn.cursor()
     my_id.execute("""select id from inventory_bd_thing""")
@@ -44,7 +44,7 @@ class QRView(View):
 
 class ThingCreateView(CreateView):
     model = Thing
-    fields = ['name', 'code', 'inv', 'price', 'count', 'summ', 'note', 'resp']
+    fields = ['name', 'code', 'inv', 'price', 'count', 'summ', 'note']
 
     def form_valid(self, form):
         Thing.objects.create(**form.cleaned_data)
@@ -55,7 +55,7 @@ class ThingCreateView(CreateView):
 class ThingUpdateView(UpdateView):
     model = Thing
     template_name_suffix = '_update_form'
-    fields = ['name', 'code', 'inv', 'price', 'count', 'summ', 'note', 'resp']
+    fields = ['name', 'code', 'inv', 'price', 'count', 'summ', 'note']
 
     def form_valid(self, form):
         form.save(commit=True)
@@ -68,62 +68,41 @@ class RespListView(generic.ListView):
     template_name = 'responsible_list.html'
     context_object_name = 'responsible_list'
 
+def responsible_table(request, *args, **kwargs):
+    things = Thing.objects.all()
+    resp = Responsible.objects.all()
 
-def responsible_list(request, *args, **kwargs):
-    conn = sqlite3.connect('db.sqlite3')
-    cursor = conn.cursor()
-    cursor.execute("""select id, name from inventory_bd_responsible""")
-    tables = cursor.fetchall()
-    my_id = conn.cursor()
-    my_id.execute("""select id from inventory_bd_responsible""")
 
-    return render(request, 'inventory_bd/responsible_all.html', {'tables': tables, 'my_id': my_id})
-
+    return render(request, 'inventory_bd/responsible_all.html', {'things': things, 'resp': resp})
 
 
 class RespUpdateView(UpdateView):
     model = Responsible
     template_name_suffix = '_update_form'
-    fields = ['name']
+    fields = ['name', 'things']
 
     def form_valid(self, form):
         form.save(commit=True)
 
         return HttpResponseRedirect(reverse('resp-list'))
+
 
 class RespCreateView(CreateView):
     model = Responsible
-    fields = ['name']
+    fields = ['name', 'things']
 
     def form_valid(self, form):
-        Responsible.objects.create()
+        Responsible.objects.create(**form.cleaned_data)
 
         return HttpResponseRedirect(reverse('resp-list'))
 
 
+def general_list(request, *args, **kwargs):
+    conn = sqlite3.connect('db.sqlite3')
+    cursor = conn.cursor()
+    cursor.execute("""select responsible_id, thing_id from inventory_bd_responsible_things""")
+    general = cursor.fetchall()
+    return render(request, 'inventory_bd/general_list.html', {'general': general})
 
-class GeneralListView(generic.ListView):
-    model = General
-    template_name = 'general_list.html'
-    context_object_name = 'general_list'
 
-
-class GeneralUpdateView(UpdateView):
-    model = General
-    template_name_suffix = '_update_form'
-    fields = ['people', 'product']
-
-    def form_valid(self, form):
-        form.save(commit=True)
-
-        return HttpResponseRedirect(reverse('general-list'))
-
-class GeneralCreateView(CreateView):
-    model = General
-    fields = ['people', 'product']
-
-    def form_valid(self, form):
-        Responsible.objects.create()
-
-        return HttpResponseRedirect(reverse('general-list'))
 

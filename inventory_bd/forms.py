@@ -1,5 +1,5 @@
 from django import forms
-from inventory_bd.models import Responsible, General, Thing
+from inventory_bd.models import Responsible, Thing
 
 
 class ThingForm(forms.ModelForm):
@@ -14,7 +14,4 @@ class ResponsibleForm(forms.ModelForm):
         fields = '__all__'
 
 
-class GeneralForm(forms.ModelForm):
-    class Meta:
-        model = General
-        fields = '__all__'
+

@@ -2,45 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Список ответственных</title>
+    <title>Таблицы по ответственным</title>
 </head>
 <body>
     <div class="container" style="max-width: 1920px">
     <div style="display: flex">
-        <table data-href-template="" border="1" style="border-collapse:collapse; width: 100%; margin-bottom: 50px; font-size: 30px">
-        <tr>
-          <th>id</th>
-          <th>ФИО</th>
-        </tr>
-        {% for i in tables %}
-            <tr>
-                {% for j in i %}
-                   <td> {{ j }} </td>
-                {% endfor %}
-            </tr>
-        {% endfor %}
-        </table>
-        <table data-href-template="" border="1" style="border-collapse:collapse; margin-bottom: 50px; font-size: 30px">
-            <tr>
-                <th>Редактировать</th>
-            </tr>
-            {% for k in my_id %}
+        <div class="container" style="max-width: 1920px">
+    {%  for i in resp %}
+          <h2>{{ i.name }}</h2>
+        <div style="display: flex; flex-direction: column">
+                <table data-href-template="" border="1" style="border-collapse:collapse; width: 100%; margin-bottom: 50px; font-size: 30px">
                 <tr>
-                      {% for m in k %}
-                        <td> <a href="{% url 'edit-resp' m %}" target="_blank">Редактировать</a> </td>
-                    {% endfor %}
+                  <th>id</th>
+                  <th>Наименование</th>
+                  <th>Код</th>
+                  <th>Инвентарный номер</th>
+                  <th>Цена</th>
+                  <th>Количество</th>
+                  <th>Сумма</th>
+                  <th>Примечание</th>
+                  <th>Qr-код</th>
                 </tr>
-            {% endfor %}
-        </table>
-    </div>
-        <div style="display: flex">
-            <form action="{% url 'create-resp' %}" target="_blank" >
-                <button class="btn" style="margin-right: 20px; width: 120px; height: 50px; font-size: 18px; cursor: pointer">Добавить</button>
-            </form>
-            <form action="/admin/inventory_bd/responsible/" target="_blank">
-                <button class="btn" style="margin-right: 20px; width: 120px; height: 50px; font-size: 18px; cursor: pointer">Удалить</button>
-             </form>
-        </div>
+                {% for r in things %}
+                    {% for j in r.responsible.all %}
+                        {% if j.id == i.id %}
+                            <tr>
+                                <td>{{ r.id }}</td>
+                                <td>{{ r.name }}</td>
+                                <td>{{ r.code }}</td>
+                                <td>{{ r.inv}}</td>
+                                <td>{{ r.price }}</td>
+                                <td>{{ r.count }}</td>
+                                <td>{{ r.summ }}</td>
+                                <td>{{ r.note }}</td>
+                                <td><a href="{% url 'qrcode' r.id %}">Qr-код</a></td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                </table>
+        {% endfor %}
+      </div>
     </div>
 </body>
 </html>
