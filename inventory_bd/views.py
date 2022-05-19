@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.views import View, generic
-from django.views.generic import UpdateView, CreateView
+from django.views.generic import UpdateView, CreateView, FormView
 
 from inventory_bd.models import Thing, Responsible
 import sqlite3
@@ -87,14 +87,19 @@ class RespUpdateView(UpdateView):
         return HttpResponseRedirect(reverse('resp-list'))
 
 
-class RespCreateView(CreateView):
-    model = Responsible
-    fields = ['name', 'things']
+class RespCreateView(FormView):
+    template_name = "inventory_bd/responsible_form.html"
+    form_class = ResponsibleForm
 
     def form_valid(self, form):
-        Responsible.objects.create(**form.cleaned_data)
+        nm = form.cleaned_data.get('name')
+        obj = form.cleaned_data.get('things')
 
+        instance = Responsible.objects.create(name=nm)
+
+        instance.things.add(*obj)
         return HttpResponseRedirect(reverse('resp-list'))
+
 
 
 def general_list(request, *args, **kwargs):

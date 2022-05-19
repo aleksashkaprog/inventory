@@ -9,9 +9,13 @@ class ThingForm(forms.ModelForm):
 
 
 class ResponsibleForm(forms.ModelForm):
+    things = forms.ModelMultipleChoiceField(
+        queryset=Thing.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
     class Meta:
         model = Responsible
-        fields = '__all__'
+        fields = ['name', 'things']
 
 
 
