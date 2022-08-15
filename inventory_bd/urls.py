@@ -14,7 +14,5 @@ urlpatterns = [
     path('inventory/<int:pk>/edit_responsible/', RespUpdateView.as_view(), name='edit-resp'),
     path('inventory/create_responsible/', RespCreateView.as_view(), name='create-resp'),
     path('invetory/general/', general_list, name='general-list'),
-    # path('inventory/create_general/', GeneralCreateView.as_view(), name='create-general'),
-    # path('inventory/<int:pk>/edit_general/', GeneralUpdateView.as_view(), name='edit-general'),
     path('invetory/responsibles_all/', responsible_table, name='resp-all'),
     ]
